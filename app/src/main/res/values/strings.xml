@@ -13,9 +13,16 @@
     <string name="true_button">True</string>
     <string name="false_button">False</string>
     <string name="next_button">Next</string>
+    <string name="show_answer_button">Show Answer</string>
+    <string name="cheat_button">Cheat!</string>
 
     <!-- Toast Text -->
     <string name="correct_toast">Hell yeah! Good job!</string>
     <string name="incorrect_toast">Fuck, you\'re stupid.</string>
+    <string name="judgement_toast">Cheating is wrong.</string>
+
+    <!-- Warnings -->
+    <string name="warning_text">Are you sure you want to do this?</string>
+    <string name="title_activity_cheat">Cheat</string>
 
 </resources>

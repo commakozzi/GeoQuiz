@@ -14,6 +14,7 @@ public class Question {
     }
 
     public int getTextResId() {
+
         return mTextResId;
     }
 
