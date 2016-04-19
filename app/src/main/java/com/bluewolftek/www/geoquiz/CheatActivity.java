@@ -11,10 +11,12 @@ import android.widget.TextView;
 
 public class CheatActivity extends AppCompatActivity {
 
+    //Variables for saved states
     private static final String EXTRA_ANSWER_IS_TRUE =
             "com.bluewolftek.www.geoquiz.answer_is_true";
     private static final String EXTRA_ANSWER_SHOWN =
             "com.bluewolftek.www.geoquiz.answer_shown";
+    private static String mUserCheated;
 
     public static Intent newIntent(Context packageContext, boolean answerIsTrue) {
         Intent i = new Intent(packageContext, CheatActivity.class);
@@ -39,6 +41,8 @@ public class CheatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cheat);
+
+        //Set toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -75,6 +79,12 @@ public class CheatActivity extends AppCompatActivity {
         Intent data = new Intent();
         data.putExtra(EXTRA_ANSWER_SHOWN, isAnswerShown);
         setResult(RESULT_OK, data);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString(EXTRA_ANSWER_SHOWN, mUserCheated);
     }
 
 }

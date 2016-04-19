@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -66,6 +67,13 @@ public class QuizActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate(Bundle) called");
         setContentView(R.layout.activity_quiz);
 
+        //Set toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        //Restore m from savedInstanceState bundle
+
+
         //Questions
         mQuestionTextView = (TextView)findViewById(R.id.question_text_view);
 
@@ -117,14 +125,14 @@ public class QuizActivity extends AppCompatActivity {
 
         updateQuestion();
 
-    }
+    } //End onCreate()
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        if (resultCode == REQUEST_CODE_CHEAT) {
+        if (requestCode == REQUEST_CODE_CHEAT) {
             if (data == null) {
                 return;
             }
