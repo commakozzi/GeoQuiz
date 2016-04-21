@@ -16,7 +16,8 @@ public class CheatActivity extends AppCompatActivity {
             "com.bluewolftek.www.geoquiz.answer_is_true";
     private static final String EXTRA_ANSWER_SHOWN =
             "com.bluewolftek.www.geoquiz.answer_shown";
-    private static String mUserCheated;
+    private static final String DATA_USER_CHEATED =
+            "com.bluewolftek.www.geoquiz.user_cheated";
 
     public static Intent newIntent(Context packageContext, boolean answerIsTrue) {
         Intent i = new Intent(packageContext, CheatActivity.class);
@@ -29,18 +30,20 @@ public class CheatActivity extends AppCompatActivity {
     }
 
     private boolean mAnswerIsTrue;
+    private boolean mUserCheated;
 
     private TextView mAnswerTextView;
     private Button mShowAnswer;
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cheat);
+
+        if(savedInstanceState != null) {
+            mUserCheated = savedInstanceState.getBoolean(DATA_USER_CHEATED);
+        }
+
 
         //Set toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -60,6 +63,7 @@ public class CheatActivity extends AppCompatActivity {
                     mAnswerTextView.setText(R.string.false_button);
                 }
                 setAnswerShownResult(true);
+                mUserCheated = true;
             }
         });
 
@@ -84,7 +88,7 @@ public class CheatActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString(EXTRA_ANSWER_SHOWN, mUserCheated);
+        savedInstanceState.putBoolean(DATA_USER_CHEATED, mUserCheated);
     }
 
 }
