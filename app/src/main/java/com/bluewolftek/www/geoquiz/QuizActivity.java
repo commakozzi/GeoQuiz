@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,12 +18,16 @@ public class QuizActivity extends AppCompatActivity {
     private static final String KEY_INDEX = "index";
     private static final int REQUEST_CODE_CHEAT = 0;
 
+    //Member variables
     private Button mTrueButton;
     private Button mFalseButton;
     private Button mCheatButton;
     private Button mNextButton;
     private TextView mQuestionTextView;
+    private int mCurrentIndex = 0;
+    private boolean mIsCheater;
 
+    //Quiz questions
     private Question[] mQuestionBank = new Question[] {
         new Question(R.string.question_oceans, true),
         new Question(R.string.question_mideast, false),
@@ -58,9 +61,6 @@ public class QuizActivity extends AppCompatActivity {
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
     }
 
-    private int mCurrentIndex = 0;
-    private boolean mIsCheater;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,9 +70,6 @@ public class QuizActivity extends AppCompatActivity {
         //Set toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //Restore m from savedInstanceState bundle
-
 
         //Questions
         mQuestionTextView = (TextView)findViewById(R.id.question_text_view);
@@ -184,6 +181,7 @@ public class QuizActivity extends AppCompatActivity {
         return true;
     }
 
+    /* Default menu from Android Studio template
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -198,4 +196,5 @@ public class QuizActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    */
 }
