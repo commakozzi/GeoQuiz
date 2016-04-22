@@ -1,11 +1,14 @@
 package com.bluewolftek.www.geoquiz;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -87,6 +90,21 @@ public class CheatActivity extends AppCompatActivity {
                 }
                 setAnswerShownResult(true);
                 mUserCheated = true;
+
+                //Add fancy circular animation
+                int cx = mShowAnswer.getWidth() / 2;
+                int cy = mShowAnswer.getHeight() / 2;
+                float radius = mShowAnswer.getWidth();
+                Animator anim = ViewAnimationUtils.createCircularReveal(mShowAnswer, cx, cy, radius, 0);
+                anim.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        mAnswerTextView.setVisibility(View.VISIBLE);
+                        mShowAnswer.setVisibility(View.INVISIBLE);
+                    }
+                });
+                anim.start();
             }
         });
     }
