@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +28,8 @@ public class CheatActivity extends AppCompatActivity {
     private boolean mUserCheated;
     private TextView mAnswerTextView;
     private Button mShowAnswer;
+    private TextView mAPITextView;
+    private int mAPILevel;
 
     //Create Intent to store boolean "true" where answerIsTrue
     //(this gets sent to QuizActivity)
@@ -42,6 +45,7 @@ public class CheatActivity extends AppCompatActivity {
         return result.getBooleanExtra(EXTRA_ANSWER_SHOWN, false);
     }
 
+    //Begin onCreate for CheatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,22 +96,33 @@ public class CheatActivity extends AppCompatActivity {
                 mUserCheated = true;
 
                 //Add fancy circular animation
-                int cx = mShowAnswer.getWidth() / 2;
-                int cy = mShowAnswer.getHeight() / 2;
-                float radius = mShowAnswer.getWidth();
-                Animator anim = ViewAnimationUtils.createCircularReveal(mShowAnswer, cx, cy, radius, 0);
-                anim.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        mAnswerTextView.setVisibility(View.VISIBLE);
-                        mShowAnswer.setVisibility(View.INVISIBLE);
-                    }
-                });
-                anim.start();
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    int cx = mShowAnswer.getWidth() / 2;
+                    int cy = mShowAnswer.getHeight() / 2;
+                    float radius = mShowAnswer.getWidth();
+                    Animator anim = ViewAnimationUtils.createCircularReveal(mShowAnswer, cx, cy, radius, 0);
+                    anim.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            mAnswerTextView.setVisibility(View.VISIBLE);
+                            mShowAnswer.setVisibility(View.INVISIBLE);
+                        }
+                    });
+                    anim.start();
+                } else {
+                    mAnswerTextView.setVisibility(View.VISIBLE);
+                    mShowAnswer.setVisibility(View.INVISIBLE);
+                }
             }
         });
-    }
+
+        //Show API Level
+        mAPILevel = Build.VERSION.SDK_INT;
+        mAPITextView = (TextView) findViewById(R.id.api_text_view);
+        mAPITextView.setText("API level " + mAPILevel);
+
+    } //End onCreate
 
     //Method to send whether user cheated or not to an Intent
     private void setAnswerShownResult(boolean isAnswerShown) {

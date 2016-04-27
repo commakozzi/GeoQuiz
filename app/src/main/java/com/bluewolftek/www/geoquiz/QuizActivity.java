@@ -17,6 +17,8 @@ public class QuizActivity extends AppCompatActivity {
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
     private static final int REQUEST_CODE_CHEAT = 0;
+    private static final String DATA_USER_CHEATED =
+            "com.bluewolftek.www.geoquiz.user_cheated";  //Save cheater across onSavedInstanceState
 
     //Member variables
     private Button mTrueButton;
@@ -36,36 +38,17 @@ public class QuizActivity extends AppCompatActivity {
         new Question(R.string.question_asia, true),
     };
 
-    //Update Question method
-    private void updateQuestion() {
-        int question = mQuestionBank[mCurrentIndex].getTextResId();
-        mQuestionTextView.setText(question);
-    }
-
-    //Check answer method
-    private void checkAnswer(boolean userPressedTrue) {
-        boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
-
-        int messageResId = 0;
-
-        if (mIsCheater) {
-            messageResId = R.string.judgement_toast;
-        } else {
-            if (userPressedTrue == answerIsTrue) {
-                messageResId = R.string.correct_toast;
-            } else {
-                messageResId = R.string.incorrect_toast;
-            }
-        }
-
-        Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
-    }
-
+    //Begin onCreate for QuizActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate(Bundle) called");
         setContentView(R.layout.activity_quiz);
+
+        //Get date from savedInstanceState bundle
+        if(savedInstanceState != null) {
+            mIsCheater = savedInstanceState.getBoolean(DATA_USER_CHEATED);
+        }
 
         //Set toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -124,6 +107,31 @@ public class QuizActivity extends AppCompatActivity {
 
     } //End onCreate()
 
+    //Update Question method
+    private void updateQuestion() {
+        int question = mQuestionBank[mCurrentIndex].getTextResId();
+        mQuestionTextView.setText(question);
+    }
+
+    //Check answer method
+    private void checkAnswer(boolean userPressedTrue) {
+        boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
+
+        int messageResId = 0;
+
+        if (mIsCheater) {
+            messageResId = R.string.judgement_toast;
+        } else {
+            if (userPressedTrue == answerIsTrue) {
+                messageResId = R.string.correct_toast;
+            } else {
+                messageResId = R.string.incorrect_toast;
+            }
+        }
+
+        Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK) {
@@ -142,6 +150,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
         Log.i(TAG, "onSaveInstanceState");
         savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
+        savedInstanceState.putBoolean(DATA_USER_CHEATED, mIsCheater);
     }
 
     @Override
