@@ -30,6 +30,7 @@ public class CheatActivity extends AppCompatActivity {
     private Button mShowAnswer;
     private TextView mAPITextView;
     private int mAPILevel;
+    private int mTargetAPILevel;
 
     //Create Intent to store boolean "true" where answerIsTrue
     //(this gets sent to QuizActivity)
